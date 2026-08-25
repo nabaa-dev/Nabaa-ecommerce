@@ -1,0 +1,67 @@
+# ============================================================
+#  docker-compose.yml — Nabaa Store Full Stack
+#  Services: PostgreSQL + Node.js API
+# ============================================================
+
+version: '3.9'
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: nabaa_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       nabaa_store
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persist database data between container restarts
+      - postgres_data:/var/lib/postgresql/data
+      # Auto-run init.sql on first startup
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d nabaa_store"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - nabaa_network
+
+  # ── Node.js API Server ───────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nabaa_api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV:    production
+      PORT:        5000
+      DB_HOST:     postgres
+      DB_PORT:     5432
+      DB_NAME:     nabaa_store
+      DB_USER:     postgres
+      DB_PASSWORD: postgres123
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - nabaa_network
+
+# ── Named Volumes ─────────────────────────────────────────
+volumes:
+  postgres_data:
+    name: nabaa_postgres_data
+
+# ── Networks ──────────────────────────────────────────────
+networks:
+  nabaa_network:
+    name: nabaa_network
+    driver: bridge
