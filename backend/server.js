@@ -21,23 +21,35 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ── PostgreSQL Connection Pool ───────────────────────────────
-const pool = new Pool({
-  host:     process.env.DB_HOST     || 'localhost',
-  port:     parseInt(process.env.DB_PORT) || 5432,
-  database: process.env.DB_NAME     || 'nabaa_store',
-  user:     process.env.DB_USER     || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres123',
+const poolConfig = process.env.DATABASE_URL
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
+    }
+  : {
+      host:     process.env.DB_HOST     || 'localhost',
+      port:     parseInt(process.env.DB_PORT) || 5432,
+      database: process.env.DB_NAME     || 'nabaa_store',
+      user:     process.env.DB_USER     || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres123',
+    };
+
+const pool = new Pool(poolConfig);
+
+// Handle background errors to prevent server crash
+pool.on('error', (err) => {
+  console.error('🔴 Unexpected error on idle database client:', err.message);
 });
 
-// Test DB connection on startup
-pool.connect((err, client, release) => {
-  if (err) {
-    console.error('❌ Database connection failed:', err.message);
-  } else {
+// Test DB connection on startup (non-fatal)
+pool.connect()
+  .then(client => {
     console.log('✅ Connected to PostgreSQL database');
-    release();
-  }
-});
+    client.release();
+  })
+  .catch(err => {
+    console.error('❌ Database connection failed at startup (continuing anyway):', err.message);
+  });
 
 // ── Helper: Async route wrapper ──────────────────────────────
 const asyncHandler = (fn) => (req, res, next) =>
