@@ -4,6 +4,7 @@
 // ============================================================
 
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const { Pool } = require('pg');
 
@@ -206,6 +207,19 @@ app.delete('/api/products/:id', asyncHandler(async (req, res) => {
 
   res.json({ message: 'تم حذف المنتج بنجاح', product: result.rows[0] });
 }));
+
+// ── Serve React Static Files in Production ─────────────────
+if (process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT) {
+  const staticPath = path.join(__dirname, '../my-store/dist');
+  app.use(express.static(staticPath));
+
+  app.use((req, res, next) => {
+    if (req.originalUrl.startsWith('/api/')) {
+      return next();
+    }
+    res.sendFile(path.join(staticPath, 'index.html'));
+  });
+}
 
 // ── 404 Handler ──────────────────────────────────────────────
 app.use((req, res) => {
