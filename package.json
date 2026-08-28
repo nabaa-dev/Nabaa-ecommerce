@@ -5,5 +5,8 @@
     "install": "npm install --prefix backend && npm install --prefix my-store",
     "build": "npm run build --prefix my-store",
     "start": "npm start --prefix backend"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
