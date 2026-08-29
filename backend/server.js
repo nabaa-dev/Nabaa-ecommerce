@@ -5,6 +5,7 @@
 
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const cors = require('cors');
 const { Pool } = require('pg');
 
@@ -47,11 +48,31 @@ pool.on('error', (err) => {
   console.error('🔴 Unexpected error on idle database client:', err.message);
 });
 
-// Test DB connection on startup (non-fatal)
+// Test DB connection and run migrations if needed on startup
 pool.connect()
-  .then(client => {
+  .then(async (client) => {
     console.log('✅ Connected to PostgreSQL database');
-    client.release();
+    try {
+      // Check if products table exists
+      const res = await client.query(`
+        SELECT EXISTS (
+          SELECT FROM information_schema.tables 
+          WHERE table_schema = 'public' 
+          AND table_name = 'products'
+        );
+      `);
+      if (!res.rows[0].exists) {
+        console.log('📦 Products table not found. Running init.sql...');
+        const initSqlPath = path.join(__dirname, 'init.sql');
+        const initSql = fs.readFileSync(initSqlPath, 'utf8');
+        await client.query(initSql);
+        console.log('✅ Database initialization complete.');
+      }
+    } catch (err) {
+      console.error('❌ Error during database initialization:', err.message);
+    } finally {
+      client.release();
+    }
   })
   .catch(err => {
     console.error('❌ Database connection failed at startup (continuing anyway):', err.message);
