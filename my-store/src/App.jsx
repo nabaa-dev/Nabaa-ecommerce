@@ -9,6 +9,7 @@ import CartDrawer from './components/CartDrawer/CartDrawer';
 import ToastContainer from './components/ToastContainer/ToastContainer';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import MyOrders from './pages/MyOrders';
 import './App.css';
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
                 <Route path="/" element={<StoreFront searchQuery={searchQuery} />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/my-orders" element={<MyOrders />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </main>

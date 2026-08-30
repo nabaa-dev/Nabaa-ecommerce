@@ -378,6 +378,21 @@ app.post('/api/orders', authenticateToken, asyncHandler(async (req, res) => {
   }
 }));
 
+// GET /api/orders/my-orders — جلب طلبيات المستخدم الحالي
+app.get('/api/orders/my-orders', authenticateToken, asyncHandler(async (req, res) => {
+  const result = await pool.query(`
+    SELECT o.*, 
+           json_agg(json_build_object('product_id', oi.product_id, 'quantity', oi.quantity, 'price', oi.price, 'name', p.name)) as items
+    FROM orders o
+    LEFT JOIN order_items oi ON o.id = oi.order_id
+    LEFT JOIN products p ON oi.product_id = p.id
+    WHERE o.user_id = $1
+    GROUP BY o.id
+    ORDER BY o.created_at DESC
+  `, [req.user.id]);
+  res.json(result.rows);
+}));
+
 // GET /api/orders — جلب جميع الطلبات (للأدمن)
 app.get('/api/orders', authenticateToken, requireAdmin, asyncHandler(async (req, res) => {
   const result = await pool.query(`

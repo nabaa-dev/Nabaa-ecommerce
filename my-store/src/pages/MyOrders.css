@@ -1,0 +1,192 @@
+/* MyOrders.css — Customer order tracking page styles */
+
+.my-orders-page {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  min-height: 80vh;
+}
+
+.my-orders-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background: var(--clr-surface);
+  color: var(--clr-text-2);
+  border: 1px solid var(--clr-border-2);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.back-btn:hover {
+  background: var(--clr-surface-2);
+  color: var(--clr-text);
+  border-color: var(--clr-primary-light);
+}
+
+.my-orders-header h1 {
+  font-size: var(--font-size-2xl);
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.my-orders-loading {
+  text-align: center;
+  padding: 4rem 1rem;
+  font-size: var(--font-size-lg);
+  color: var(--clr-text-2);
+}
+
+.my-orders-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--clr-surface);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--clr-border-2);
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.empty-icon {
+  color: var(--clr-text-muted);
+  margin-bottom: 1rem;
+}
+
+.my-orders-empty h3 {
+  font-size: var(--font-size-xl);
+  color: var(--clr-text);
+  margin-bottom: 0.5rem;
+}
+
+.my-orders-empty p {
+  color: var(--clr-text-3);
+  margin-bottom: 1.5rem;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border-2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition);
+}
+
+.order-card:hover {
+  border-color: var(--clr-primary-glow);
+}
+
+.order-card__header {
+  padding: 1.25rem 1.5rem;
+  background: var(--clr-surface-2);
+  border-bottom: 1px solid var(--clr-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.order-id {
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  color: var(--clr-primary-light);
+  margin-left: 1rem;
+}
+
+.order-date {
+  font-size: var(--font-size-xs);
+  color: var(--clr-text-3);
+}
+
+.order-badge {
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.order-badge--pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.order-badge--processing { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+.order-badge--shipped { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+.order-badge--delivered { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.order-badge--cancelled { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+.order-card__body {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.order-info-section h4,
+.order-items-section h4 {
+  font-size: var(--font-size-sm);
+  color: var(--clr-text-2);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.order-info-section p {
+  font-size: var(--font-size-sm);
+  color: var(--clr-text-3);
+  margin-bottom: 0.4rem;
+}
+
+.order-info-section strong {
+  color: var(--clr-text);
+}
+
+.order-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.order-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  color: var(--clr-text);
+}
+
+.order-card__footer {
+  padding: 1rem 1.5rem;
+  background: var(--clr-surface-2);
+  border-top: 1px solid var(--clr-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+}
+
+.order-total-amount {
+  font-size: var(--font-size-lg);
+  color: var(--clr-primary-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .order-card__body {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

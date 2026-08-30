@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import { ShoppingCartIcon, SearchIcon, StoreIcon, UserIcon, LogOutIcon } from '../Icons';
+import { ShoppingCartIcon, SearchIcon, StoreIcon, UserIcon, LogOutIcon, ShoppingBagIcon } from '../Icons';
 import './Header.css';
 
 export default function Header({ searchQuery, setSearchQuery }) {
@@ -29,6 +29,9 @@ export default function Header({ searchQuery, setSearchQuery }) {
               <span className="header__username">
                 <UserIcon size={15} /> {user.name}
               </span>
+              <Link to="/my-orders" className="header__tab header__tab--orders">
+                <ShoppingBagIcon size={15} /> طلباتي
+              </Link>
               <button onClick={logout} className="header__logout-btn">
                 <LogOutIcon size={15} /> خروج
               </button>
