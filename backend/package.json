@@ -10,7 +10,7 @@
     "test:watch": "jest --watch --runInBand"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "22.16.0"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
