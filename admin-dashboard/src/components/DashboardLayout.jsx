@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }) {
     <div className="layout">
       <aside className="sidebar">
         <div className="sidebar-header">
-          <h2>لوحة التحكم</h2>
+          <h2>لوحة تحكم نبأ</h2>
           <span className="admin-badge">Admin</span>
         </div>
         

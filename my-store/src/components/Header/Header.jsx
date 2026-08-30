@@ -17,8 +17,8 @@ export default function Header({ searchQuery, setSearchQuery }) {
             <StoreIcon size={22} />
           </div>
           <div className="header__logo-text">
-            <span className="header__brand">المتجر</span>
-            <span className="header__tagline">STORE</span>
+            <span className="header__brand">نبأ ستور</span>
+            <span className="header__tagline">NABAA STORE</span>
           </div>
         </Link>
 
