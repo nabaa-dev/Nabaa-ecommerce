@@ -1,68 +1,61 @@
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { ShoppingCartIcon, SearchIcon, StoreIcon, LayoutDashboardIcon } from '../Icons';
+import { useAuth } from '../../context/AuthContext';
+import { ShoppingCartIcon, SearchIcon, StoreIcon, UserIcon, LogOutIcon } from '../Icons';
 import './Header.css';
 
-export default function Header({ activeTab, setActiveTab, searchQuery, setSearchQuery }) {
+export default function Header({ searchQuery, setSearchQuery }) {
   const { totalItems, setIsCartOpen } = useCart();
+  const { user, logout } = useAuth();
 
   return (
     <header className="header">
       <div className="header__inner container">
         {/* Logo */}
-        <div
-          className="header__logo"
-          onClick={() => setActiveTab('store')}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === 'Enter' && setActiveTab('store')}
-        >
+        <Link to="/" className="header__logo">
           <div className="header__logo-icon">
             <StoreIcon size={22} />
           </div>
           <div className="header__logo-text">
-            <span className="header__brand">نبأ</span>
+            <span className="header__brand">المتجر</span>
             <span className="header__tagline">STORE</span>
           </div>
-        </div>
+        </Link>
 
-        {/* Navigation Tabs */}
+        {/* Navigation / Auth Links */}
         <nav className="header__nav" role="navigation" aria-label="Main Navigation">
-          <button
-            id="tab-store"
-            className={`header__tab ${activeTab === 'store' ? 'header__tab--active' : ''}`}
-            onClick={() => setActiveTab('store')}
-            aria-pressed={activeTab === 'store'}
-          >
-            <StoreIcon size={15} />
-            <span>المتجر</span>
-          </button>
-          <button
-            id="tab-admin"
-            className={`header__tab ${activeTab === 'admin' ? 'header__tab--active' : ''}`}
-            onClick={() => setActiveTab('admin')}
-            aria-pressed={activeTab === 'admin'}
-          >
-            <LayoutDashboardIcon size={15} />
-            <span>لوحة التحكم</span>
-          </button>
+          {user ? (
+            <div className="header__user-menu">
+              <span className="header__username">
+                <UserIcon size={15} /> {user.name}
+              </span>
+              <button onClick={logout} className="header__logout-btn">
+                <LogOutIcon size={15} /> خروج
+              </button>
+            </div>
+          ) : (
+            <div className="header__auth-links">
+              <Link to="/login" className="header__tab">تسجيل الدخول</Link>
+              <Link to="/register" className="header__tab">إنشاء حساب</Link>
+            </div>
+          )}
         </nav>
 
         {/* Search + Cart */}
         <div className="header__actions">
-          {activeTab === 'store' && (
-            <div className="header__search">
-              <SearchIcon size={15} className="header__search-icon" />
-              <input
-                id="search-input"
-                type="search"
-                className="header__search-input"
-                placeholder="ابحث عن منتج..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                aria-label="Search products"
-              />
-            </div>
-          )}
+          <div className="header__search">
+            <SearchIcon size={15} className="header__search-icon" />
+            <input
+              id="search-input"
+              type="search"
+              className="header__search-input"
+              placeholder="ابحث عن منتج..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search products"
+            />
+          </div>
+          
           <button
             id="cart-btn"
             className="header__cart-btn"

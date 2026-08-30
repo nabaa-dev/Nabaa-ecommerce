@@ -1,5 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import { XIcon, PlusIcon, MinusIcon, TrashIcon, ShoppingBagIcon, ArrowRightIcon } from '../Icons';
 import './CartDrawer.css';
 
@@ -65,7 +68,14 @@ function CartItem({ item }) {
 
 export default function CartDrawer() {
   const { cartItems, isCartOpen, setIsCartOpen, totalPrice, totalItems, clearCart } = useCart();
+  const { user, token, API_URL } = useAuth();
+  const navigate = useNavigate();
   const drawerRef = useRef(null);
+
+  const [step, setStep] = useState('cart'); // 'cart', 'checkout', 'success'
+  const [formData, setFormData] = useState({ phone: '', address: '', nearest_landmark: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const handleKey = (e) => { if (e.key === 'Escape') setIsCartOpen(false); };
@@ -75,14 +85,48 @@ export default function CartDrawer() {
 
   useEffect(() => {
     document.body.style.overflow = isCartOpen ? 'hidden' : '';
-    if (isCartOpen) drawerRef.current?.focus();
+    if (isCartOpen) {
+      drawerRef.current?.focus();
+      if (step === 'success') setStep('cart');
+    }
     return () => { document.body.style.overflow = ''; };
   }, [isCartOpen]);
 
-  const handleCheckout = () => {
-    alert('🎉 شكراً لتسوقك معنا! تم إتمام الطلب بنجاح.');
-    clearCart();
-    setIsCartOpen(false);
+  const handleProceedToCheckout = () => {
+    if (!user) {
+      setIsCartOpen(false);
+      navigate('/login');
+    } else {
+      setStep('checkout');
+    }
+  };
+
+  const submitOrder = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      await axios.post(
+        `${API_URL}/orders`,
+        {
+          name: user.name,
+          phone: formData.phone,
+          address: formData.address,
+          nearest_landmark: formData.nearest_landmark,
+          cart_items: cartItems,
+          total_amount: totalPrice
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      clearCart();
+      setStep('success');
+    } catch (err) {
+      setError(err.response?.data?.message || 'حدث خطأ أثناء إتمام الطلب');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -100,28 +144,96 @@ export default function CartDrawer() {
         aria-label="Shopping Cart"
         tabIndex={-1}
       >
-        {/* Header */}
         <div className="cart-drawer__header">
           <div className="cart-drawer__title-wrap">
             <ShoppingBagIcon size={20} />
-            <h2 className="cart-drawer__title">سلة التسوق</h2>
-            {totalItems > 0 && (
+            <h2 className="cart-drawer__title">
+              {step === 'checkout' ? 'إتمام الطلب' : 'سلة التسوق'}
+            </h2>
+            {totalItems > 0 && step === 'cart' && (
               <span className="cart-drawer__count">{totalItems}</span>
             )}
           </div>
           <button
             id="close-cart-btn"
             className="cart-drawer__close"
-            onClick={() => setIsCartOpen(false)}
+            onClick={() => {
+              setIsCartOpen(false);
+              setTimeout(() => setStep('cart'), 300);
+            }}
             aria-label="Close cart"
           >
             <XIcon size={18} />
           </button>
         </div>
 
-        {/* Body */}
         <div className="cart-drawer__body">
-          {cartItems.length === 0 ? (
+          {step === 'success' ? (
+            <div className="cart-drawer__empty">
+              <div className="cart-drawer__empty-icon" style={{ background: '#dcfce7', color: '#16a34a' }}>
+                <ShoppingBagIcon size={40} />
+              </div>
+              <p className="cart-drawer__empty-title">تم إرسال طلبك بنجاح!</p>
+              <p className="cart-drawer__empty-subtitle">
+                شكراً لتسوقك معنا. سنتواصل معك قريباً.
+              </p>
+              <button 
+                className="btn-primary" 
+                style={{ marginTop: '2rem', width: 'auto', padding: '0.75rem 2rem' }}
+                onClick={() => setIsCartOpen(false)}
+              >
+                متابعة التسوق
+              </button>
+            </div>
+          ) : step === 'checkout' ? (
+            <div className="cart-drawer__checkout-form">
+              {error && <div className="auth-error" style={{marginBottom: '1rem'}}>{error}</div>}
+              <form onSubmit={submitOrder} className="checkout-form">
+                <div className="form-group">
+                  <label>رقم الهاتف</label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={e => setFormData({...formData, phone: e.target.value})}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>العنوان بالكامل</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.address}
+                    onChange={e => setFormData({...formData, address: e.target.value})}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>أقرب نقطة دالة (اختياري)</label>
+                  <input
+                    type="text"
+                    value={formData.nearest_landmark}
+                    onChange={e => setFormData({...formData, nearest_landmark: e.target.value})}
+                  />
+                </div>
+                
+                <div className="cart-drawer__summary" style={{ marginTop: '2rem' }}>
+                  <div className="cart-drawer__summary-row cart-drawer__summary-row--total">
+                    <span>المطلوب دفعه</span>
+                    <span>${totalPrice.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                  <button type="button" className="cart-drawer__clear-btn" onClick={() => setStep('cart')}>
+                    رجوع للسلة
+                  </button>
+                  <button type="submit" disabled={loading} className="btn-primary">
+                    {loading ? 'جاري الإرسال...' : 'تأكيد الطلب'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          ) : cartItems.length === 0 ? (
             <div className="cart-drawer__empty">
               <div className="cart-drawer__empty-icon">
                 <ShoppingBagIcon size={40} />
@@ -140,8 +252,7 @@ export default function CartDrawer() {
           )}
         </div>
 
-        {/* Footer */}
-        {cartItems.length > 0 && (
+        {cartItems.length > 0 && step === 'cart' && (
           <div className="cart-drawer__footer">
             <div className="cart-drawer__summary">
               <div className="cart-drawer__summary-row">
@@ -160,9 +271,9 @@ export default function CartDrawer() {
             <button
               id="checkout-btn"
               className="cart-drawer__checkout-btn"
-              onClick={handleCheckout}
+              onClick={handleProceedToCheckout}
             >
-              <span>إتمام الشراء</span>
+              <span>{user ? 'متابعة الدفع' : 'تسجيل الدخول لإتمام الطلب'}</span>
               <ArrowRightIcon size={18} />
             </button>
             <button className="cart-drawer__clear-btn" onClick={clearCart}>
