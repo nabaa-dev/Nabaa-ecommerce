@@ -48,19 +48,16 @@
 .header__logo:hover { opacity: 0.9; }
 .header__logo:hover .header__logo-icon { transform: rotate(-8deg) scale(1.1); }
 
-.header__logo-icon {
+.header__logo-icon,
+.header__logo-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, var(--clr-primary-dark) 0%, var(--clr-primary-light) 100%);
-  border-radius: var(--radius-md);
-  color: #fff;
-  box-shadow:
-    0 4px 16px var(--clr-primary-glow),
-    0 0 0 1px rgba(20,184,166,0.3);
   transition: transform var(--transition-spring);
+  filter: drop-shadow(0 4px 12px rgba(20,184,166,0.3));
+}
+.header__logo:hover .header__logo-badge {
+  transform: rotate(-6deg) scale(1.08);
 }
 
 .header__logo-text {
