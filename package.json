@@ -2,7 +2,7 @@
   "name": "nabaa-fullstack",
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "npm install --prefix backend && npm install --prefix my-store",
+    "postinstall": "npm install --prefix backend && npm install --include=dev --prefix my-store",
     "build": "npm run build --prefix my-store",
     "start": "npm start --prefix backend"
   },
