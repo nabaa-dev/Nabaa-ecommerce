@@ -37,7 +37,7 @@ export default function App() {
             <footer className="footer">
               <div className="container footer__inner">
                 <p className="footer__copy">
-                  © 2025 <span className="footer__brand">ستور</span>. جميع الحقوق محفوظة.
+                  © 2025 <span className="footer__brand">نبأ ستور</span>. جميع الحقوق محفوظة.
                 </p>
               </div>
             </footer>

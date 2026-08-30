@@ -1,0 +1,150 @@
+/* DashboardLayout.css — Sidebar & Layout styles */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background: #ffffff;
+  border-left: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.admin-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+  background: #f9fafb;
+  color: #111827;
+}
+
+.nav-link.active {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+.user-email {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.logout-btn:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.main-content {
+  flex: 1;
+  margin-right: 280px;
+  padding: 2rem;
+  background: #f3f4f6;
+  min-height: 100vh;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .sidebar { width: 240px; }
+  .main-content { margin-right: 240px; }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-left: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .nav-link { white-space: nowrap; flex-shrink: 0; }
+  .main-content { margin-right: 0; padding: 1rem; }
+}

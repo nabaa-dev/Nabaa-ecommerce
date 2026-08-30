@@ -20,13 +20,17 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await axios.post(`${API_URL}/auth/login`, { email, password });
+      // login() throws if role !== 'admin'
       login(res.data.user, res.data.token);
       navigate('/');
     } catch (err) {
-      if (err.message.includes('غير مصرح')) {
+      // Check both server response errors and client-side thrown errors
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.message) {
         setError(err.message);
       } else {
-        setError(err.response?.data?.message || 'فشل تسجيل الدخول');
+        setError('فشل تسجيل الدخول');
       }
     } finally {
       setLoading(false);
