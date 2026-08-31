@@ -3,7 +3,8 @@
 // Base URL: http://localhost:5000/api/products
 // ==============================
 
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
+const API_URL = rawApiUrl.replace(/\/$/, '');
 const BASE_URL = `${API_URL}/products`;
 
 // Helper function for consistent error handling
