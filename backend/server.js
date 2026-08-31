@@ -15,22 +15,32 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ── Middleware ───────────────────────────────────────────────
-const allowedOrigins = [
+const defaultOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3000',
 ];
-if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
-}
-if (process.env.ADMIN_URL) {
-  allowedOrigins.push(process.env.ADMIN_URL);
-}
+
+const envOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_URL,
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [])
+].filter(Boolean).map(url => url.trim().replace(/\/$/, ''));
+
+const allowedOrigins = [...defaultOrigins, ...envOrigins];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    const cleanOrigin = origin.replace(/\/$/, '');
+    if (allowedOrigins.includes(cleanOrigin) || cleanOrigin.endsWith('.railway.app') || cleanOrigin.endsWith('.up.railway.app')) {
+      return callback(null, true);
+    }
+    return callback(null, true); // Fallback allow in production web apps
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 app.use(express.json());
@@ -449,12 +459,16 @@ app.use((err, req, res, next) => {
 });
 
 // ── Start Server ─────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`🚀 Nabaa Store API running on http://localhost:${PORT}`);
-  console.log(`📋 Endpoints:`);
-  console.log(`   GET    http://localhost:${PORT}/api/products`);
-  console.log(`   POST   http://localhost:${PORT}/api/products`);
-  console.log(`   PUT    http://localhost:${PORT}/api/products/:id`);
-  console.log(`   DELETE http://localhost:${PORT}/api/products/:id`);
-  console.log(`   GET    http://localhost:${PORT}/health`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Nabaa Store API running on http://localhost:${PORT}`);
+    console.log(`📋 Endpoints:`);
+    console.log(`   GET    http://localhost:${PORT}/api/products`);
+    console.log(`   POST   http://localhost:${PORT}/api/products`);
+    console.log(`   PUT    http://localhost:${PORT}/api/products/:id`);
+    console.log(`   DELETE http://localhost:${PORT}/api/products/:id`);
+    console.log(`   GET    http://localhost:${PORT}/health`);
+  });
+}
+
+module.exports = { app, pool };

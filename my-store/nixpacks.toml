@@ -1,0 +1,8 @@
+[variables]
+NIXPACKS_NODE_VERSION = "22.16.0"
+
+[phases.build]
+cmds = ["npm install --include=dev", "npm run build"]
+
+[start]
+cmd = "npx serve dist -s -l $PORT"

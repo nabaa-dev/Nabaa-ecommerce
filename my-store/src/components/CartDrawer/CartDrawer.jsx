@@ -72,10 +72,15 @@ export default function CartDrawer() {
   const navigate = useNavigate();
   const drawerRef = useRef(null);
 
-  const [step, setStep] = useState('cart'); // 'cart', 'checkout', 'success'
-  const [formData, setFormData] = useState({ phone: '', address: '', nearest_landmark: '' });
+  const [formData, setFormData] = useState({ name: user?.name || '', phone: '', address: '', nearest_landmark: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (user?.name && !formData.name) {
+      setFormData(prev => ({ ...prev, name: user.name }));
+    }
+  }, [user]);
 
   useEffect(() => {
     const handleKey = (e) => { if (e.key === 'Escape') setIsCartOpen(false); };
@@ -97,6 +102,7 @@ export default function CartDrawer() {
       setIsCartOpen(false);
       navigate('/login');
     } else {
+      setFormData(prev => ({ ...prev, name: user.name || prev.name }));
       setStep('checkout');
     }
   };
@@ -110,7 +116,7 @@ export default function CartDrawer() {
       await axios.post(
         `${API_URL}/orders`,
         {
-          name: user.name,
+          name: formData.name || user.name,
           phone: formData.phone,
           address: formData.address,
           nearest_landmark: formData.nearest_landmark,
@@ -189,6 +195,16 @@ export default function CartDrawer() {
             <div className="cart-drawer__checkout-form">
               {error && <div className="auth-error" style={{marginBottom: '1rem'}}>{error}</div>}
               <form onSubmit={submitOrder} className="checkout-form">
+                <div className="form-group">
+                  <label>الاسم الكامل</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    placeholder="أدخل اسمك الثلاثي"
+                  />
+                </div>
                 <div className="form-group">
                   <label>رقم الهاتف</label>
                   <input

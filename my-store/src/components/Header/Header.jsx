@@ -12,23 +12,23 @@ export default function Header({ searchQuery, setSearchQuery }) {
     <header className="header">
       <div className="header__inner container">
         {/* Logo */}
-        <Link to="/" className="header__logo" aria-label="الصفحة الرئيسية">
+        <Link to="/" className="header__logo" aria-label="الصفحة الرئيسية - متجر نبأ">
           <div className="header__logo-badge">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="36" height="36" rx="10" fill="url(#logo-grad)"/>
-              <path d="M12 15L18 9L24 15V25C24 26.1046 23.1046 27 22 27H14C12.8954 27 12 26.1046 12 25V15Z" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M15 15C15 16.6569 16.3431 18 18 18C19.6569 18 21 16.6569 21 15" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="40" height="40" rx="12" fill="url(#nabaa-logo-grad)"/>
+              <path d="M12 28V12L28 28V12" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="28" cy="12" r="2.5" fill="#fef08a"/>
               <defs>
-                <linearGradient id="logo-grad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#0d9488"/>
-                  <stop offset="1" stopColor="#38bdf8"/>
+                <linearGradient id="nabaa-logo-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#0284c7"/>
+                  <stop offset="1" stopColor="#0d9488"/>
                 </linearGradient>
               </defs>
             </svg>
           </div>
           <div className="header__logo-text">
-            <span className="header__brand">المتجر</span>
-            <span className="header__tagline">PREMIUM STORE</span>
+            <span className="header__brand">متجر نبأ</span>
+            <span className="header__tagline">NABAA STORE</span>
           </div>
         </Link>
 
