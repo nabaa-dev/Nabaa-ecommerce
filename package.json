@@ -8,5 +8,8 @@
   },
   "engines": {
     "node": "22.16.0"
+  },
+  "devDependencies": {
+    "@railway/cli": "^5.45.10"
   }
 }

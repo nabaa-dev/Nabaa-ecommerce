@@ -67,28 +67,18 @@ pool.on('error', (err) => {
   console.error('🔴 Unexpected error on idle database client:', err.message);
 });
 
-// Test DB connection and run migrations if needed on startup
+// Test DB connection and run migrations on every startup (safe - uses IF NOT EXISTS)
 pool.connect()
   .then(async (client) => {
     console.log('✅ Connected to PostgreSQL database');
     try {
-      // Check if products table exists
-      const res = await client.query(`
-        SELECT EXISTS (
-          SELECT FROM information_schema.tables 
-          WHERE table_schema = 'public' 
-          AND table_name = 'products'
-        );
-      `);
-      if (!res.rows[0].exists) {
-        console.log('📦 Products table not found. Running init.sql...');
-        const initSqlPath = path.join(__dirname, 'init.sql');
-        const initSql = fs.readFileSync(initSqlPath, 'utf8');
-        await client.query(initSql);
-        console.log('✅ Database initialization complete.');
-      }
+      // Always run migrate.sql which uses IF NOT EXISTS - safe to run multiple times
+      const migrateSqlPath = path.join(__dirname, 'migrate.sql');
+      const migrateSql = fs.readFileSync(migrateSqlPath, 'utf8');
+      await client.query(migrateSql);
+      console.log('✅ Database migration complete (all tables ready).');
     } catch (err) {
-      console.error('❌ Error during database initialization:', err.message);
+      console.error('❌ Error during database migration:', err.message);
     } finally {
       client.release();
     }
