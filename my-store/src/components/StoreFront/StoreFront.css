@@ -113,14 +113,10 @@
 
 /* ── Filter Bar ────────────────────────────────────────── */
 .storefront__filters {
-  background: rgba(10, 22, 40, 0.95);
+  background: rgba(10, 22, 40, 0.97);
   border-bottom: 1px solid var(--clr-border);
   padding: var(--space-3) 0;
-  position: sticky;
-  top: 0; /* Header scrolls away, so filters stick at very top */
-  z-index: var(--z-sticky);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  /* NOT sticky — scrolls naturally with the page */
 }
 
 .storefront__filters-inner {
@@ -177,9 +173,14 @@
   box-shadow: 0 3px 12px var(--clr-primary-glow);
 }
 
-/* Mobile responsive fixes */
+/* Mobile responsive fixes — mobile only, no sticky/fixed */
 @media (max-width: 768px) {
-  .storefront__filters { top: 60px; /* Mobile: below compact navbar */ }
+  /* Force filter bar to scroll with page — no sticky/fixed */
+  .storefront__filters {
+    position: static !important;
+    top: auto !important;
+    width: 100%;
+  }
 
   .storefront__filters-inner {
     flex-wrap: nowrap;
@@ -187,33 +188,17 @@
     padding-bottom: 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    gap: var(--space-3);
+    gap: 8px;
   }
   .storefront__filters-inner::-webkit-scrollbar { display: none; }
+  .storefront__filter-label { display: none; }
+  .storefront__categories { flex-wrap: nowrap; gap: 6px; }
+  .storefront__count-badge { flex-shrink: 0; }
 
-  .storefront__filter-label { display: none; } /* Save space on mobile */
-
-  .storefront__categories { flex-wrap: nowrap; gap: 8px; }
-
-  .storefront__count-badge {
-    margin-right: 0;
-    flex-shrink: 0;
-  }
-
-  .storefront__hero {
-    padding: 28px var(--space-4) 28px;
-  }
-  .storefront__hero-title {
-    font-size: clamp(22px, 6vw, 32px);
-  }
-  .storefront__hero-subtitle {
-    font-size: var(--font-size-sm);
-  }
-  .storefront__hero-badge {
-    font-size: 12px;
-    padding: 5px 14px;
-    margin-bottom: var(--space-4);
-  }
+  .storefront__hero { padding: 24px var(--space-4); }
+  .storefront__hero-title { font-size: clamp(20px, 6vw, 30px); }
+  .storefront__hero-subtitle { font-size: var(--font-size-sm); }
+  .storefront__hero-badge { font-size: 12px; padding: 5px 14px; margin-bottom: var(--space-3); }
 }
 
 .storefront__count-badge {
@@ -242,15 +227,16 @@
     gap: 28px;
   }
 }
-@media (min-width: 900px) and (max-width: 1199px) {
-  .product-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 600px) and (max-width: 899px) {
+@media (min-width: 769px) and (max-width: 1199px) {
   .product-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
 }
-/* Mobile: 4 compact columns */
-@media (max-width: 599px) {
-  .product-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; padding: var(--space-4) 0; }
+/* Mobile (<=768px): exactly 4 compact columns */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: var(--space-4) 0;
+  }
 }
 
 /* ── Loading Skeleton ──────────────────────────────────── */

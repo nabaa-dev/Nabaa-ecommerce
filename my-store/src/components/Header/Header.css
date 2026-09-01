@@ -265,6 +265,11 @@
 
 /* ── Mobile (≤768px) ───────────────────────────────────── */
 @media (max-width: 768px) {
+  /* Header scrolls naturally with page — NOT fixed or sticky */
+  .header {
+    position: static !important;
+  }
+
   /* Compact single row: ☰ | logo | 🛒 */
   .header__inner {
     height: 60px;

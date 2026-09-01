@@ -142,6 +142,17 @@ input, textarea, select { font-family: inherit; }
   padding-inline: var(--space-6);
 }
 
+/* Mobile container padding — tighter to avoid overflow */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  .container {
+    padding-inline: 8px;
+  }
+}
+
 /* ── App Shell ──────────────────────────────────────────── */
 .app {
   display: flex;

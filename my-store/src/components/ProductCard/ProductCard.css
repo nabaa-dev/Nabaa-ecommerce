@@ -247,36 +247,57 @@
   to   { left: 125%; }
 }
 
-/* ── Mobile ultra-compact card (4 columns) ──────────── */
-@media (max-width: 599px) {
-  .product-card { border-radius: var(--radius); }
-  .product-card__img-wrap { height: 90px; }
-  .product-card__img-wrap::after { height: 40%; } /* smaller overlay */
-  .product-card__badge { font-size: 8px; padding: 3px 6px; top: 4px; right: 4px; }
-  .product-card__content { padding: 6px 6px 8px; gap: 4px; }
+/* ── Mobile ultra-compact card (4 columns for <=768px) ──────── */
+@media (max-width: 768px) {
+  .product-card {
+    border-radius: var(--radius-sm);
+    min-width: 0; /* Prevents overflow in grid items */
+  }
+  .product-card__img-wrap { height: 95px; }
+  .product-card__img-wrap::after { height: 40%; }
+  .product-card__badge {
+    font-size: 8px;
+    padding: 2px 5px;
+    top: 3px;
+    right: 3px;
+    gap: 2px;
+  }
+  .product-card__badge svg { width: 8px; height: 8px; }
+  .product-card__content {
+    padding: 6px 5px 6px;
+    gap: 3px;
+    min-width: 0;
+  }
   .product-card__name {
     font-size: 11px;
     font-weight: 700;
     -webkit-line-clamp: 2;
-    line-height: 1.2;
+    line-height: 1.25;
+    word-break: break-word;
   }
   .product-card__desc { display: none; }
   .product-card__stars { display: none; }
   .product-card__footer {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 4px;
-    padding-top: 4px;
+    padding-top: 3px;
+  }
+  .product-card__price {
+    justify-content: flex-start;
+    gap: 2px;
   }
   .product-card__price-symbol { font-size: 9px; }
-  .product-card__price-value { font-size: 13px; }
+  .product-card__price-value { font-size: 12px; }
   .product-card__btn {
     width: 100%;
     justify-content: center;
-    padding: 6px 4px;
+    padding: 5px 2px;
     font-size: 10px;
-    border-radius: var(--radius-sm);
-    gap: 2px;
+    font-weight: 700;
+    border-radius: 4px;
+    gap: 0;
+    letter-spacing: 0;
   }
   .product-card__btn svg { display: none; } /* hide icon on tiny cards */
   .product-card:hover { transform: none; }
