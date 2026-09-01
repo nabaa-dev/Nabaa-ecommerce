@@ -72,6 +72,7 @@ export default function CartDrawer() {
   const navigate = useNavigate();
   const drawerRef = useRef(null);
 
+  const [step, setStep] = useState('cart'); // 'cart' | 'checkout' | 'success'
   const [formData, setFormData] = useState({ name: user?.name || '', phone: '', address: '', nearest_landmark: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
