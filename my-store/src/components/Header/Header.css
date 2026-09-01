@@ -1,23 +1,15 @@
 /* ============================================================
    Header.css — Responsive Premium Navigation Bar
+   (Header is STATIC — scrolls naturally with the page)
    ============================================================ */
 
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative; /* Scrolls with the page — no overlap with content */
+  width: 100%;
   z-index: var(--z-header);
-  background: rgba(5, 13, 20, 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(5, 13, 20, 0.97);
   border-bottom: 1px solid var(--clr-border);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.4);
-  background: rgba(5, 13, 20, 0.85);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border-bottom: 1px solid var(--clr-border);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .header::before {
@@ -32,11 +24,11 @@
 }
 
 .header__inner {
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  flex-wrap: wrap;
 }
 
 /* ── Mobile Toggle ─────────────────────────────────────── */
@@ -81,12 +73,12 @@
 }
 
 @keyframes pulse-heart {
-  0% { transform: scale(1); }
+  0%  { transform: scale(1); }
   10% { transform: scale(1.15); }
   20% { transform: scale(1); }
   30% { transform: scale(1.15); }
   40% { transform: scale(1); }
-  100% { transform: scale(1); }
+  100%{ transform: scale(1); }
 }
 
 .header__logo-text {
@@ -264,17 +256,16 @@
   to   { transform: scale(1); opacity: 1; }
 }
 
-/* ── Responsive Mobile ─────────────────────────────────── */
+/* ── Tablet ────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .header__search { max-width: 200px; }
   .header__nav { gap: var(--space-1); }
   .header__btn, .header__user-badge { padding: 8px 12px; }
 }
 
+/* ── Mobile (≤768px) ───────────────────────────────────── */
 @media (max-width: 768px) {
-  /* Single compact row: toggle | logo | cart */
-  .header { padding: 0; }
-
+  /* Compact single row: ☰ | logo | 🛒 */
   .header__inner {
     height: 60px;
     gap: 0;
@@ -306,23 +297,21 @@
     flex-shrink: 0;
   }
 
-  /* Hide desktop search from the main row */
-  .header__search {
-    display: none;
-  }
+  /* Hide desktop search from the top bar on mobile */
+  .header__search { display: none; }
 
-  /* Slide-in sidebar */
+  /* Full-screen slide-in sidebar (fixed to viewport) */
   .header__actions-wrapper {
     position: fixed;
-    top: 60px;
+    top: 0;
     right: -100%;
     width: min(280px, 85vw);
-    height: calc(100vh - 60px);
+    height: 100vh;
     background: var(--clr-bg-2);
     border-left: 1px solid var(--clr-border);
-    padding: var(--space-5);
+    padding: 24px 20px 20px;
     transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 150;
+    z-index: 500;
     display: flex;
     flex-direction: column;
     box-shadow: -12px 0 40px rgba(0,0,0,0.6);
@@ -335,6 +324,7 @@
     width: 100%;
     gap: var(--space-3);
     align-items: stretch;
+    margin-top: var(--space-8);
   }
 
   .header__btn,
@@ -346,14 +336,15 @@
     border-radius: var(--radius-md);
   }
 
+  /* Dark overlay behind sidebar */
   .header__overlay {
     position: fixed;
-    top: 60px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.65);
     backdrop-filter: blur(3px);
-    z-index: 140;
+    z-index: 490;
   }
 }

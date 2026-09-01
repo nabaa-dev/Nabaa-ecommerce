@@ -113,11 +113,11 @@
 
 /* ── Filter Bar ────────────────────────────────────────── */
 .storefront__filters {
-  background: rgba(10, 22, 40, 0.9);
+  background: rgba(10, 22, 40, 0.95);
   border-bottom: 1px solid var(--clr-border);
   padding: var(--space-3) 0;
   position: sticky;
-  top: 76px; /* Desktop: below full navbar */
+  top: 0; /* Header scrolls away, so filters stick at very top */
   z-index: var(--z-sticky);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -245,13 +245,12 @@
 @media (min-width: 900px) and (max-width: 1199px) {
   .product-grid { grid-template-columns: repeat(3, 1fr); }
 }
-/* Tablet: 3 columns */
 @media (min-width: 600px) and (max-width: 899px) {
   .product-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
 }
-/* Mobile: 2 columns */
+/* Mobile: 4 compact columns */
 @media (max-width: 599px) {
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .product-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; padding: var(--space-4) 0; }
 }
 
 /* ── Loading Skeleton ──────────────────────────────────── */

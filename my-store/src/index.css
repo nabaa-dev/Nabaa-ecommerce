@@ -150,14 +150,9 @@ input, textarea, select { font-family: inherit; }
 }
 .app__main {
   flex: 1;
-  padding-top: 76px; /* Desktop: full navbar */
+  /* No padding-top needed — header scrolls naturally with the page */
 }
 
-@media (max-width: 768px) {
-  .app__main {
-    padding-top: 60px; /* Mobile: compact single-row navbar */
-  }
-}
 
 /* ── Footer ─────────────────────────────────────────────── */
 .footer {
