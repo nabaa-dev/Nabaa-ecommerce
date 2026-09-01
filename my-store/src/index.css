@@ -150,7 +150,13 @@ input, textarea, select { font-family: inherit; }
 }
 .app__main {
   flex: 1;
-  padding-top: 76px;
+  padding-top: 80px; /* Desktop header height roughly */
+}
+
+@media (max-width: 768px) {
+  .app__main {
+    padding-top: 130px; /* Mobile header height with search bar below */
+  }
 }
 
 /* ── Footer ─────────────────────────────────────────────── */

@@ -7,7 +7,8 @@
   top: 0;
   inset-inline: 0;
   z-index: var(--z-header);
-  height: 76px;
+  min-height: 76px;
+  padding: 16px 0;
   background: rgba(5, 13, 20, 0.85);
   backdrop-filter: blur(24px) saturate(200%);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
@@ -27,11 +28,11 @@
 }
 
 .header__inner {
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 /* ── Mobile Toggle ─────────────────────────────────────── */
@@ -267,21 +268,46 @@
 }
 
 @media (max-width: 768px) {
-  .header__inner { gap: var(--space-2); }
+  .header { padding: 12px 0; }
   
-  .header__mobile-toggle { display: flex; order: -1; }
+  .header__inner { 
+    gap: 12px 0; 
+  }
   
-  .header__logo-text { display: none; } /* Hide text, keep pulse icon */
+  .header__mobile-toggle { 
+    display: flex; 
+    order: 1; 
+  }
   
-  .header__search { margin-inline: var(--space-2); max-width: 100%; }
+  .header__logo { 
+    order: 2; 
+    flex: 1; 
+    justify-content: center; 
+  }
+  
+  .header__brand { font-size: 18px; }
+  .header__logo-badge { width: 36px; height: 36px; }
+  
+  .header__cart-btn { 
+    order: 3; 
+    width: 40px; 
+    height: 40px; 
+  }
+  
+  /* Search goes to its own row below */
+  .header__search { 
+    order: 4; 
+    max-width: 100%; 
+    width: 100%; 
+  }
   
   /* Sidebar for buttons */
   .header__actions-wrapper {
     position: fixed;
-    top: 76px;
+    top: 116px; /* Below the expanded header */
     right: -100%;
     width: 260px;
-    height: calc(100vh - 76px);
+    height: calc(100vh - 116px);
     background: var(--clr-bg-1);
     border-left: 1px solid var(--clr-border);
     padding: var(--space-5);
@@ -290,6 +316,7 @@
     display: flex;
     flex-direction: column;
     box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    background: var(--clr-bg-2);
   }
   .header__actions-wrapper--open { right: 0; }
   
@@ -310,7 +337,7 @@
   
   .header__overlay {
     position: fixed;
-    top: 76px;
+    top: 116px;
     inset: 0;
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(4px);

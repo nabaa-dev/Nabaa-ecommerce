@@ -149,10 +149,11 @@
   flex: 1;
 }
 
+/* Category Buttons */
 .storefront__cat-btn {
-  padding: 6px var(--space-4);
+  padding: 8px 16px;
   border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 700;
   background: var(--clr-surface);
   border: 1px solid var(--clr-border-2);
@@ -160,6 +161,8 @@
   transition: all var(--transition);
   font-family: var(--font-family);
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .storefront__cat-btn:hover {
   border-color: var(--clr-primary-light);
@@ -172,6 +175,29 @@
   border-color: transparent;
   color: #fff;
   box-shadow: 0 3px 12px var(--clr-primary-glow);
+}
+
+/* Mobile responsive filters */
+@media (max-width: 768px) {
+  .storefront__filters-inner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 8px; /* For scrollbar breathing room */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Hide scrollbar for cleaner look */
+  }
+  .storefront__filters-inner::-webkit-scrollbar {
+    display: none;
+  }
+  .storefront__categories {
+    flex-wrap: nowrap; /* Horizontal scrolling instead of wrapping */
+  }
+  .storefront__hero {
+    padding: 40px var(--space-4) 40px; /* Reduce hero padding on mobile */
+  }
+  .storefront__hero-title {
+    font-size: 28px; /* Ensure title fits nicely */
+  }
 }
 
 .storefront__count-badge {
