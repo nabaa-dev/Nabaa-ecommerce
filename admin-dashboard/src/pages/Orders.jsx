@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { ShoppingBag, Search, RefreshCw, User, Phone, MapPin, Tag } from 'lucide-react';
+import { ShoppingBag, Search, RefreshCw, User, Phone, MapPin, Tag, Trash } from 'lucide-react';
 
 export default function Orders() {
   const { token, API_URL } = useAuth();
@@ -41,6 +41,21 @@ export default function Orders() {
       ));
     } catch (err) {
       alert('فشل تحديث حالة الطلب');
+    }
+  };
+
+  const deleteOrder = async (id) => {
+    if (!window.confirm('هل أنت متأكد من أنك تريد حذف هذا الطلب نهائياً؟')) return;
+    
+    try {
+      await axios.delete(`${API_URL}/orders/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setOrders(orders.filter(order => order.id !== id));
+    } catch (err) {
+      console.error('Error deleting order:', err);
+      alert('فشل حذف الطلب');
     }
   };
 
@@ -130,6 +145,7 @@ export default function Orders() {
                 <th>السعر الإجمالي</th>
                 <th>حالة الطلب</th>
                 <th>التاريخ</th>
+                <th>إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -206,12 +222,34 @@ export default function Orders() {
                         minute: '2-digit'
                       })}
                     </td>
+                    <td>
+                      <button
+                        onClick={() => deleteOrder(order.id)}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: 'var(--error)',
+                          cursor: 'pointer',
+                          padding: '0.5rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: '8px',
+                          transition: 'background 0.2s',
+                        }}
+                        title="حذف الطلب"
+                        onMouseOver={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                        onMouseOut={(e) => e.currentTarget.style.background = 'none'}
+                      >
+                        <Trash size={18} />
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
               {filteredOrders.length === 0 && (
                 <tr>
-                  <td colSpan="7" style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-muted)' }}>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-muted)' }}>
                     <ShoppingBag size={48} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
                     <div>لا توجد طلبات تطابق معايير البحث</div>
                   </td>

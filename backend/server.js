@@ -422,6 +422,16 @@ app.put('/api/orders/:id/status', authenticateToken, requireAdmin, asyncHandler(
   res.json(result.rows[0]);
 }));
 
+// DELETE /api/orders/:id — حذف الطلب (للأدمن)
+app.delete('/api/orders/:id', authenticateToken, requireAdmin, asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  
+  const result = await pool.query('DELETE FROM orders WHERE id = $1 RETURNING *', [id]);
+  
+  if (result.rows.length === 0) return res.status(404).json({ message: 'الطلب غير موجود' });
+  res.json({ message: 'تم حذف الطلب بنجاح', order: result.rows[0] });
+}));
+
 // ── Serve React Static Files in Production ─────────────────
 if (process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT) {
   const staticPath = path.join(__dirname, '../my-store/dist');
