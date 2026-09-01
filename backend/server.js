@@ -50,7 +50,8 @@ app.use(express.urlencoded({ extended: true }));
 const poolConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }
+      // Railway internal network doesn't use SSL; only external connections need it
+      ...(process.env.DATABASE_URL.includes('.railway.internal') ? {} : { ssl: { rejectUnauthorized: false } })
     }
   : {
       host:     process.env.DB_HOST     || 'localhost',
