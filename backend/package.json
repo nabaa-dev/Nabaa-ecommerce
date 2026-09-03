@@ -1,7 +1,7 @@
 {
-  "name": "nabaa-store-backend",
+  "name": "nabd-store-backend",
   "version": "1.0.0",
-  "description": "REST API backend for Nabaa Store - Express + PostgreSQL",
+  "description": "REST API backend for Nabd Store - Express + PostgreSQL",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -32,6 +32,6 @@
     ],
     "verbose": true
   },
-  "author": "Nabaa Store",
+  "author": "Nabd Store",
   "license": "MIT"
 }

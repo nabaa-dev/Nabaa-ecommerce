@@ -1,5 +1,5 @@
 // ============================================================
-//  server.js — Express REST API for Nabaa Store
+//  server.js — Express REST API for Nabd Store
 //  Base URL: http://localhost:5000/api/products
 // ============================================================
 
@@ -56,7 +56,7 @@ const poolConfig = process.env.DATABASE_URL
   : {
       host:     process.env.DB_HOST     || 'localhost',
       port:     parseInt(process.env.DB_PORT) || 5432,
-      database: process.env.DB_NAME     || 'nabaa_store',
+      database: process.env.DB_NAME     || 'nabd_store',
       user:     process.env.DB_USER     || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres123',
     };
@@ -127,14 +127,14 @@ const requireAdmin = (req, res, next) => {
 // ── Seed Default Admin ───────────────────────────────────────
 const seedAdmin = async () => {
   try {
-    const adminCheck = await pool.query('SELECT * FROM users WHERE email = $1', ['admin@nabaa.com']);
+    const adminCheck = await pool.query('SELECT * FROM users WHERE email = $1', ['admin@nabd.com']);
     if (adminCheck.rows.length === 0) {
       const hashedPassword = await bcrypt.hash(DEFAULT_ADMIN_PASSWORD, 10);
       await pool.query(
         'INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, $4)',
-        ['Admin', 'admin@nabaa.com', hashedPassword, 'admin']
+        ['Admin', 'admin@nabd.com', hashedPassword, 'admin']
       );
-      console.log('✅ Default Admin created: admin@nabaa.com');
+      console.log('✅ Default Admin created: admin@nabd.com');
     }
   } catch (err) {
     console.error('❌ Error seeding admin:', err.message);
@@ -462,7 +462,7 @@ app.use((err, req, res, next) => {
 // ── Start Server ─────────────────────────────────────────────
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`🚀 Nabaa Store API running on http://localhost:${PORT}`);
+    console.log(`🚀 Nabd Store API running on http://localhost:${PORT}`);
     console.log(`📋 Endpoints:`);
     console.log(`   GET    http://localhost:${PORT}/api/products`);
     console.log(`   POST   http://localhost:${PORT}/api/products`);

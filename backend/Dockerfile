@@ -1,5 +1,5 @@
 # ============================================================
-#  Dockerfile — Nabaa Store Backend
+#  Dockerfile — Nabd Store Backend
 #  Node.js 20 Alpine (lightweight production image)
 # ============================================================
 

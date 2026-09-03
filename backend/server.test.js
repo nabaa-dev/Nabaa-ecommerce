@@ -1,6 +1,6 @@
 // ============================================================
 //  server.test.js — REST API Integration Tests (Jest + Supertest)
-//  يختبر جميع endpoints لـ Nabaa Store API
+//  يختبر جميع endpoints لـ Nabd Store API
 // ============================================================
 
 const request = require('supertest');

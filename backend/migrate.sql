@@ -1,5 +1,5 @@
 -- ============================================================
---  migrate.sql — Nabaa Store DB Migration (safe to run multiple times)
+--  migrate.sql — Nabd Store DB Migration (safe to run multiple times)
 --  Creates missing tables without destroying existing data
 -- ============================================================
 

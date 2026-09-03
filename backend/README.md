@@ -1,6 +1,6 @@
-# 🚀 Nabaa Store — Backend API
+# 🚀 Nabd Store — Backend API
 
-REST API مبني بـ **Express.js + PostgreSQL** للمتجر الإلكتروني نبأ ستور.
+REST API مبني بـ **Express.js + PostgreSQL** للمتجر الإلكتروني نبض ستور.
 
 ---
 
@@ -69,8 +69,8 @@ brew services start postgresql@16
 
 ### 2. إنشاء قاعدة البيانات
 ```bash
-psql -U postgres -c "CREATE DATABASE nabaa_store;"
-psql -U postgres -d nabaa_store -f init.sql
+psql -U postgres -c "CREATE DATABASE nabd_store;"
+psql -U postgres -d nabd_store -f init.sql
 ```
 
 ### 3. إعداد متغيرات البيئة

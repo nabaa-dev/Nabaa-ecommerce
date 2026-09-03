@@ -45,7 +45,7 @@ export default function Login() {
             <ShieldAlert size={32} color="#4f46e5" />
           </div>
           <h2>تسجيل دخول الإدارة</h2>
-          <p>لوحة التحكم الخاصة بمتجر نبأ</p>
+          <p>لوحة التحكم الخاصة بمتجر نبض</p>
         </div>
         
         {error && <div className="error-message">{error}</div>}

@@ -1,5 +1,5 @@
 {
-  "name": "nabaa-fullstack",
+  "name": "nabd-fullstack",
   "version": "1.0.0",
   "scripts": {
     "postinstall": "npm install --prefix backend && npm install --include=dev --prefix my-store",

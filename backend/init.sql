@@ -1,5 +1,5 @@
 -- ============================================================
---  init.sql — Nabaa Store Database Initialization
+--  init.sql — Nabd Store Database Initialization
 --  يتم تشغيل هذا الملف تلقائياً عند أول تشغيل للـ Container
 -- ============================================================
 
